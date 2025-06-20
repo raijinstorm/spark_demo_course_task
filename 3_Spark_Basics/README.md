@@ -103,6 +103,12 @@ spark-submit –master <Spark master URL> –executor-memory 2g –executor-core
 ```
 spark-class org.apache.spark.deploy.master.Master
 ```
+
+Linux
+```
+$SPARK_HOME/sbin/start-master.sh
+```
+
 Это ничто иное как объявление master для вашего кластера. Вообще Spark предоставляет широкий спектр скриптов для автоматического подъема всего добра, но к сожалению они не работают
 на Windows(ток Линуха). Поэтому мы будем делать всё ручками.
 После выполнения кода выше, должен быть такой вывод
@@ -117,11 +123,19 @@ spark-class org.apache.spark.deploy.master.Master
 ```
 spark-class org.apache.spark.deploy.worker.Worker spark://<адрес мастера> --cores 2 --memory 3g
 ```
+Linux
+```
+$SPARK_HOME/sbin/start-worker.sh spark://localhost:7077 --cores 2 --memory 3g
+```
 Это создат worker на вашем компьютере с 2 ядрами и 3гб оперативки. Spark считает логические ядра, то есть например у меня 6 ядер по 2 потока, то есть для спарка это 12 ядер. 
 Чтобы проверить что он создался, зайдите в UI и там будет Workers(1). Note: не меняйте сеть когда создаёте все это, ибо очевидно что адреса будут меняться.
 Создадим ещё одного Worker но уже с 3 ядрами и 4g памяти.
 ```
 spark-class org.apache.spark.deploy.worker.Worker spark://<адрес мастера> --cores 3 --memory 4g
+```
+Linux
+```
+$SPARK_HOME/sbin/start-worker.sh spark://localhost:7077 --cores 3 --memory 4g
 ```
 В spark UI должен появиться второй Worker.
 Теперь ваш кластер готов к боевым действиям.
